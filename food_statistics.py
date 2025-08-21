@@ -21,22 +21,11 @@ class Statistics:
         self.dataset = dataset
 
     def mean(self, column):
-        """
-        Calcula a média aritmética de uma coluna.
+        
+        valores = self.dataset[column]
+        media_aritmetica = sum(valores) / len(valores)
+        return media_aritmetica
 
-        Fórmula:
-        $$ \mu = \frac{1}{N} \sum_{i=1}^{N} x_i $$
-
-        Parâmetros
-        ----------
-        column : str
-            O nome da coluna (chave do dicionário do dataset).
-
-        Retorno
-        -------
-        float
-            A média dos valores na coluna.
-        """
         pass
 
     def median(self, column):
