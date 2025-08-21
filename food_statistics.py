@@ -47,21 +47,21 @@ class Statistics:
         pass
 
     def mode(self, column):
-        """
-        Encontra a moda (ou modas) de uma coluna.
-
-        A moda é o valor que aparece com mais frequência no conjunto de dados.
-
-        Parâmetros
-        ----------
-        column : str
-            O nome da coluna (chave do dicionário do dataset).
-
-        Retorno
-        -------
-        list
-            Uma lista contendo o(s) valor(es) da moda.
-        """
+        
+        valores = self.dataset[column]
+        
+        contagem = {}
+        for v in valores:
+            if v in contagem:
+                contagem[v] += 1
+            else:
+                contagem[v] = 1
+                
+        max_freq = max(contagem.values())
+        moda = [k for k, v in contagem.items() if v == max_freq]
+        
+        return moda
+        
         pass
 
     def stdev(self, column):
