@@ -50,16 +50,19 @@ class Statistics:
         
         valores = self.dataset[column]
         
-        contagem = {}
-        for v in valores:
-            if v in contagem:
-                contagem[v] += 1
-            else:
-                contagem[v] = 1
-                
-        max_freq = max(contagem.values())
-        moda = [k for k, v in contagem.items() if v == max_freq]
+        valores_unicos = set(valores)
         
+        frequencias = {}
+        for item in valores_unicos:
+            frequencias[item] = valores.count(item)
+            
+        maior_frequencia = max(frequencias.values())
+        
+        moda = []
+        for item, freq in frequencias.items():
+            if freq == maior_frequencia:
+                moda.append(item)
+
         return moda
         
         pass
