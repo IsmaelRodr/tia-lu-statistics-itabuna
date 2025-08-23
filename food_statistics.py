@@ -112,6 +112,15 @@ class Statistics:
         float
             O desvio padrão dos valores na coluna.
         """
+
+        valores = self.dataset[column]
+        variancia = self.variance(valores)
+
+        desvio_padrao = variancia ** 0.5
+
+        return float(desvio_padrao)
+      
+
         pass
 
     def variance(self, column):
@@ -131,6 +140,19 @@ class Statistics:
         float
             A variância dos valores na coluna.
         """
+        valores = self.dataset[column]
+        media = self.mean(valores)
+
+        desvios_quadrados = []
+        for item in valores:
+            desvio = item - media
+            desvio_quadrado = desvio ** 2
+            desvios_quadrados.append(desvio_quadrado)
+
+        variancia = (sum(desvios_quadrados)) / len(valores)
+
+        return float(variancia)
+
         pass
 
     def covariance(self, column_a, column_b):
