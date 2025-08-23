@@ -135,37 +135,58 @@ class Statistics:
         pass
 
     def absolute_frequency(self, column):
-        """
-        Calcula a frequência absoluta de cada item em uma coluna.
+        
+        valores = self.dataset[column]
+        
+        valores_unicos = set(valores)
+        
+        frequencias = {}
+        for item in valores_unicos:
+            frequencias[item] = valores.count(item)
+            
+        return frequencias
+    
+        # """
+        # Calcula a frequência absoluta de cada item em uma coluna.
 
-        Parâmetros
-        ----------
-        column : str
-            O nome da coluna (chave do dicionário do dataset).
+        # Parâmetros
+        # ----------
+        # column : str
+        #     O nome da coluna (chave do dicionário do dataset).
 
-        Retorno
-        -------
-        dict
-            Um dicionário onde as chaves são os itens e os valores são
-            suas contagens (frequência absoluta).
-        """
+        # Retorno
+        # -------
+        # dict
+        #     Um dicionário onde as chaves são os itens e os valores são
+        #     suas contagens (frequência absoluta).
+        # """
         pass
 
     def relative_frequency(self, column):
-        """
-        Calcula a frequência relativa de cada item em uma coluna.
+        
+        valores = self.dataset[column]
+        
+        valores_unicos = set(valores)
+        
+        frequencias = {}
+        for item in valores_unicos:
+            frequencias[item] = valores.count(item) / len(valores)
+            
+        return frequencias
+        # """
+        # Calcula a frequência relativa de cada item em uma coluna.
 
-        Parâmetros
-        ----------
-        column : str
-            O nome da coluna (chave do dicionário do dataset).
+        # Parâmetros
+        # ----------
+        # column : str
+        #     O nome da coluna (chave do dicionário do dataset).
 
-        Retorno
-        -------
-        dict
-            Um dicionário onde as chaves são os itens e os valores são
-            suas proporções (frequência relativa).
-        """
+        # Retorno
+        # -------
+        # dict
+        #     Um dicionário onde as chaves são os itens e os valores são
+        #     suas proporções (frequência relativa).
+        # """
         pass
 
     def cumulative_frequency(self, column, frequency_method='absolute'):
