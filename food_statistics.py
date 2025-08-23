@@ -117,24 +117,44 @@ class Statistics:
         pass
 
     def covariance(self, column_a, column_b):
-        """
-        Calcula a covariância entre duas colunas.
+        
+        valores_a = self.dataset[column_a]
+        valores_b = self.dataset[column_b]
+        
+        media_a = self.mean(valores_a)
+        media_b = self.mean(valores_b)
+        
+        desvio_a = 0
+        desvio_b = 0
+        
+        for valor_a in valores_a:
+            desvio_a += (valor_a - media_a)
+        
+        for valor_b in valores_b:
+            desvio_b += (valor_b - media_b)
+        
+        covariance = (desvio_a * desvio_b) / len(valores_a) - 1
+        
+        return float(covariance)
+        
+        # """
+        # Calcula a covariância entre duas colunas.
 
-        Fórmula:
-        $$ \text{cov}(X, Y) = \frac{\sum_{i=1}^{N} (x_i - \mu_x)(y_i - \mu_y)}{N} $$
+        # Fórmula:
+        # $$ \text{cov}(X, Y) = \frac{\sum_{i=1}^{N} (x_i - \mu_x)(y_i - \mu_y)}{N} $$
 
-        Parâmetros
-        ----------
-        column_a : str
-            O nome da primeira coluna (X).
-        column_b : str
-            O nome da segunda coluna (Y).
+        # Parâmetros
+        # ----------
+        # column_a : str
+        #     O nome da primeira coluna (X).
+        # column_b : str
+        #     O nome da segunda coluna (Y).
 
-        Retorno
-        -------
-        float
-            O valor da covariância entre as duas colunas.
-        """
+        # Retorno
+        # -------
+        # float
+        #     O valor da covariância entre as duas colunas.
+        # """
         pass
 
     def itemset(self, column):
