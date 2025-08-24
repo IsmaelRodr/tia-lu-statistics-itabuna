@@ -16,8 +16,14 @@ class Statistics:
         self.dataset = dataset
 
     def mean(self, column):
+
+        if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
         
         valores = self.dataset[column]
+        if len(valores) == 0:
+            return 0.0
+        
         media_aritmetica = sum(valores) / len(valores)
 
         return float(media_aritmetica)
@@ -25,17 +31,21 @@ class Statistics:
         pass
 
     def median(self, column):
-        
+
+        if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
+
         valores = self.dataset[column]
+        if len(valores) == 0:
+            return 0.0
         
         valores_ordenados = sorted(valores)
             
         if len(valores_ordenados) % 2 == 0:
             i = len(valores_ordenados) // 2 - 1
-            dois_valores = [valores_ordenados[i],valores_ordenados[i + 1]]
-            mediana = self.mean(dois_valores)
+            mediana = (valores_ordenados[i] + valores_ordenados[i + 1]) / 2
         else:
-            i = len(valores_ordenados) // 2 - 1
+            i = len(valores_ordenados) // 2
             mediana = valores_ordenados[i]
         
         return float(mediana)
@@ -43,8 +53,13 @@ class Statistics:
         pass
 
     def mode(self, column):
-        
+
+        if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
+
         valores = self.dataset[column]
+        if not valores:
+            return []
         
         valores_unicos = set(valores)
         
@@ -59,16 +74,20 @@ class Statistics:
             if freq == maior_frequencia:
                 moda.append(item)
 
-        return float(moda)
+        return moda
         
         pass
 
     def stdev(self, column):
 
-        valores = self.dataset[column]
-        variancia = self.variance(valores)
+        if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
 
-        desvio_padrao = variancia ** 0.5
+        valores = self.variance(column)
+        if not valores:
+            return 0.0
+
+        desvio_padrao = valores ** 0.5
 
         return float(desvio_padrao)
       
@@ -77,8 +96,14 @@ class Statistics:
 
     def variance(self, column):
 
+        if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
+
         valores = self.dataset[column]
-        media = self.mean(valores)
+        if not valores:
+            return 0.0
+
+        media = self.mean(column)
 
         desvios_quadrados = []
         for item in valores:
@@ -93,38 +118,41 @@ class Statistics:
         pass
 
     def covariance(self, column_a, column_b):
-        
+
+        if column_a not in self.dataset or column_b not in self.dataset:
+            raise KeyError("Uma das colunas não existe no dataset.")
+
         valores_a = self.dataset[column_a]
         valores_b = self.dataset[column_b]
-        
-        media_a = self.mean(valores_a)
-        media_b = self.mean(valores_b)
-        
-        desvio_a = 0
-        desvio_b = 0
-        
-        for valor_a in valores_a:
-            desvio_a += (valor_a - media_a)
-        
-        for valor_b in valores_b:
-            desvio_b += (valor_b - media_b)
-        
-        covariance = (desvio_a * desvio_b) / len(valores_a) - 1
-        
-        return float(covariance)
-        
+
+        if not valores_a or not valores_b or len(valores_a) != len(valores_b) or len(valores_a) < 2:
+            return 0.0
+
+        media_a = self.mean(column_a)
+        media_b = self.mean(column_b)
+
+        soma_dos_produtos_dos_desvios = sum((x - media_a) * (y - media_b) for x, y in zip(valores_a, valores_b))
+
+        return float(soma_dos_produtos_dos_desvios / len(valores_a))
+          
         pass
 
     def itemset(self, column):
+
+        if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
      
         itens = self.dataset[column]
         itens_unicos = set(itens)
 
-        return float(itens_unicos)
+        return itens_unicos
       
         pass
 
     def absolute_frequency(self, column):
+
+        if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
         
         valores = self.dataset[column]
         
@@ -139,8 +167,13 @@ class Statistics:
         pass
 
     def relative_frequency(self, column):
+
+        if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
         
         valores = self.dataset[column]
+        if len(valores) == 0:
+            return {}
         
         valores_unicos = set(valores)
         
@@ -153,41 +186,51 @@ class Statistics:
         pass
 
     def cumulative_frequency(self, column, frequency_method='absolute'):
-  
-        valores = self.dataset[column]
-        valores_ordenados = sorted(valores)
-        acumulado = 0
 
-        frequencia = {}
-        for item in valores_ordenados:
-            acumulado = acumulado + valores.count(item)
-            if frequency_method == 'relative':
-                frequencia[item] = acumulado / len(valores)
-            else:
-                frequencia[item] = acumulado
+       if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
+       
+       if frequency_method not in ['absolute', 'relative']:
+            raise ValueError("O 'frequency_method' deve ser 'absolute' ou 'relative'.")
+       
+       valores = self.dataset[column]
+       if not valores:
+            return {}
+       
+       if frequency_method == 'absolute':
+            frequencias = self.absolute_frequency(column) 
+       else:
+           frequencias = self.relative_frequency(column)
+    
+       frequencia_acumulada = {}
+       acumulado = 0
+           
+       for item in sorted(frequencias.keys()):
+            acumulado += frequencias[item]
+            frequencia_acumulada[item] = acumulado
 
-        return frequencia
 
-        pass
+       return frequencia_acumulada
+
+       pass
 
     def conditional_probability(self, column, value1, value2):
 
+        if column not in self.dataset:
+            raise KeyError(f"A coluna '{column}' não existe no dataset.")
+
         valores = self.dataset[column]
+        if not valores or len(valores) < 2:
+            return 0.0
 
         totalB = 0
         sequencia = 0
 
-        for i in range(len(valores) - 1):
-            if valores[i] == value2:
-                totalB = totalB + 1
-                if valores[i + 1] == value1:
-                    sequencia = sequencia + 1
+        totalB = sum(1 for v in valores[0:] if v == value2)
+        sequencia = sum(1 for i in range(len(valores) - 1) if valores[i] == value2 and valores[i + 1] == value1)
         
         if totalB > 0:
-            probabilidade_condicional = sequencia / totalB
-        else:
-            probabilidade_condicional = 0 
-
-        return float(probabilidade_condicional)
+            return float(sequencia / totalB)
+        return 0.0
 
         pass
