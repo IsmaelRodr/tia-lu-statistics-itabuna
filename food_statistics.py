@@ -21,7 +21,7 @@ class Statistics:
         self.dataset = dataset
 
     def mean(self, column):
-        
+
         valores = self.dataset[column]
         media_aritmetica = sum(valores) / len(valores)
         return media_aritmetica
@@ -126,7 +126,7 @@ class Statistics:
     def itemset(self, column):
      
         itens = self.dataset[column]
-        itens_unicos = set(itens)
+        itens_unicos = set(itens) 
         return itens_unicos
       
         pass
